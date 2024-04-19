@@ -7,7 +7,7 @@ export const metadata = {
   description: "Discover & Share AI Prompts",
 };
 
-const RootLayout = ({ children }) => {
+const RootLayout = ({ children }: { children: JSX.Element }) => {
   return (
     <html lang="en">
       <body>
