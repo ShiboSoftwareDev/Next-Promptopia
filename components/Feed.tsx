@@ -9,7 +9,7 @@ const PromptCardList = ({
   handleTagClick,
 }: {
   data: Post[];
-  handleTagClick: () => void;
+  handleTagClick: (tag: string) => void;
 }) => {
   return (
     <div className="mt-16 prompt_layout">
@@ -49,6 +49,10 @@ const Feed = () => {
     return () => clearTimeout(timer);
   }, [searchText]);
 
+  function handleTagClick(tag: string) {
+    setSearchText(tag);
+  }
+
   return (
     <section className="feed">
       <form className="relative w-full flex-center">
@@ -61,7 +65,7 @@ const Feed = () => {
           className="search_input peer"
         ></input>
       </form>
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      <PromptCardList data={posts} handleTagClick={handleTagClick} />
     </section>
   );
 };
