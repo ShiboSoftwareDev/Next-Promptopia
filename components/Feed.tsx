@@ -34,14 +34,20 @@ const Feed = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch("/api/prompt");
+      const response = await fetch(
+        `/api/prompt${searchText === "" ? "" : "?query=" + searchText}`
+      );
       const data = await response.json();
 
       setPosts(data);
     };
 
-    fetchPosts();
-  }, []);
+    const timer = setTimeout(() => {
+      fetchPosts();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchText]);
 
   return (
     <section className="feed">
