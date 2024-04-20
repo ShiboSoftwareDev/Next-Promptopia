@@ -1,4 +1,5 @@
 import { DefaultSession } from "next-auth";
+import { Profile } from "next-auth";
 
 export interface Post {
   prompt: string;
@@ -20,4 +21,8 @@ export interface URLParams {
 
 export interface CustomSession extends DefaultSession {
   id: string;
+}
+
+export interface CustomProfile extends Profile {
+  picture: string;
 }
