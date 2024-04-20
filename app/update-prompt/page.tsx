@@ -4,8 +4,11 @@ import { useState, useEffect, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import Form from "@components/Form";
+import { CustomSession } from "@global-types";
+import { useSession } from "next-auth/react";
 
 const UpdatePrompt = () => {
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const promptId = searchParams.get("id");
   const router = useRouter();
@@ -43,7 +46,12 @@ const UpdatePrompt = () => {
         }),
       });
 
-      if (response.ok) router.push("/profile");
+      if (response.ok)
+        router.push(
+          `/profile?id=${(session?.user as CustomSession)?.id}&username=${
+            session?.user?.name
+          }`
+        );
     } catch (error) {
       console.log(error);
     } finally {
