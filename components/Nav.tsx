@@ -12,6 +12,7 @@ import {
   LiteralUnion,
 } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers/index";
+import { CustomSession } from "@global-types";
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -59,7 +60,11 @@ const Nav = () => {
               Sign Out
             </button>
 
-            <Link href="/profile">
+            <Link
+              href={`/profile?id=${
+                (session?.user as CustomSession)?.id
+              }&username=${session?.user?.name}`}
+            >
               <Image
                 src={ImageSrc}
                 width={37}
@@ -104,7 +109,9 @@ const Nav = () => {
             {toggleDropdown && (
               <div className="dropdown">
                 <Link
-                  href="/profile"
+                  href={`/profile?id=${
+                    (session?.user as CustomSession)?.id
+                  }&username=${session?.user?.name}`}
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >

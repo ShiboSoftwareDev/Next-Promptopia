@@ -2,25 +2,28 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Profile from "@components/Profile";
 import { CustomSession, Post } from "@global-types";
 
 const Page = () => {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("id");
+  const username = searchParams.get("username");
   const router = useRouter();
   const { data: session } = useSession();
   const [posts, setPosts] = useState([]);
-  const id = (session?.user as CustomSession)?.id;
+  const pageId = (session?.user as CustomSession)?.id;
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch(`/api/users/${id}/posts`);
+      const response = await fetch(`/api/users/${userId}/posts`);
       const data = await response.json();
       setPosts(data);
     };
-    if (id) fetchPosts();
-  }, [id]);
+    if (userId) fetchPosts();
+  }, [userId]);
 
   const handleEdit = (post: Post) => {
     router.push(`/update-prompt?id=${post._id}`);
@@ -44,8 +47,10 @@ const Page = () => {
 
   return (
     <Profile
-      name="My"
-      desc="Welcome to your personalized profile page"
+      name={pageId !== userId ? username + "'s" || "" : "My"}
+      desc={`Welcome to ${
+        pageId !== userId ? username + "'s" || "" : "your personalized"
+      } profile page`}
       data={posts}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
